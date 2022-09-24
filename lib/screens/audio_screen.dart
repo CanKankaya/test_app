@@ -83,8 +83,7 @@ class _AudioScreenState extends State<AudioScreen> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const AudioScreen(),
+                                        builder: (context) => const AudioScreen(),
                                       ),
                                     );
                                   },
@@ -180,17 +179,13 @@ class CustomPlayer extends StatelessWidget {
                       ValueListenableBuilder<ProgressBarState>(
                         valueListenable: audioManager.progressNotifier,
                         builder: (_, value, __) {
-                          var isThisActive =
-                              audioManager.lastActiveIndex.value == index;
+                          var isThisActive = audioManager.lastActiveIndex.value == index;
                           if (isThisActive) {
                             lastPosition = value.current;
-                            if (value.current >=
-                                value.total -
-                                    const Duration(milliseconds: 250)) {
+                            if (value.current >= value.total - const Duration(milliseconds: 250)) {
                               log('check if audio finished');
                               audioManager.pause();
-                              SchedulerBinding.instance
-                                  .addPostFrameCallback((_) {
+                              SchedulerBinding.instance.addPostFrameCallback((_) {
                                 audioManager.initIcon.value = true;
                               });
 
@@ -200,10 +195,8 @@ class CustomPlayer extends StatelessWidget {
                             }
                           }
                           return ProgressBar(
-                            progress:
-                                isThisActive ? value.current : lastPosition,
-                            buffered:
-                                isThisActive ? value.buffered : Duration.zero,
+                            progress: isThisActive ? value.current : lastPosition,
+                            buffered: isThisActive ? value.buffered : Duration.zero,
                             total: futureValue.data ?? Duration.zero,
                             onSeek: isThisActive
                                 ? (position) {
@@ -216,17 +209,14 @@ class CustomPlayer extends StatelessWidget {
                                   }
                                 : (position) async {
                                     log(position.toString());
-                                    await audioManager.changeUrl(
-                                        url, index, position);
+                                    await audioManager.changeUrl(url, index, position);
                                     audioManager.seek(
                                       position: position,
                                     );
                                     audioManager.play(index);
                                   },
-                            progressBarColor:
-                                isThisActive ? Colors.amber : Colors.teal,
-                            thumbColor:
-                                isThisActive ? Colors.amber : Colors.teal,
+                            progressBarColor: isThisActive ? Colors.amber : Colors.teal,
+                            thumbColor: isThisActive ? Colors.amber : Colors.teal,
                             baseBarColor: Colors.grey[800],
                             bufferedBarColor: Colors.grey,
                           );
@@ -241,8 +231,7 @@ class CustomPlayer extends StatelessWidget {
                               if (audioManager.lastActiveIndex.value == index) {
                                 return buttonValue == ButtonState.loading
                                     ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: const [
                                           IconButton(
                                             onPressed: null,
@@ -263,17 +252,14 @@ class CustomPlayer extends StatelessWidget {
                                         ],
                                       )
                                     : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           IconButton(
-                                            onPressed: lastPosition ==
-                                                    Duration.zero
+                                            onPressed: lastPosition == Duration.zero
                                                 ? null
                                                 : () {
                                                     audioManager.pause();
-                                                    audioManager
-                                                        .initIcon.value = true;
+                                                    audioManager.initIcon.value = true;
                                                     audioManager.seek(
                                                       position: Duration.zero,
                                                     );
@@ -281,23 +267,18 @@ class CustomPlayer extends StatelessWidget {
                                             icon: const Icon(Icons.replay),
                                           ),
                                           ValueListenableBuilder<bool>(
-                                              valueListenable:
-                                                  audioManager.initIcon,
-                                              builder:
-                                                  (context, initValue, __) {
+                                              valueListenable: audioManager.initIcon,
+                                              builder: (context, initValue, __) {
                                                 return CustomIconButton(
                                                   icon: initValue
                                                       ? AnimatedIcons.play_pause
-                                                      : AnimatedIcons
-                                                          .pause_play,
-                                                  onPressed: audioManager
-                                                          .isPlaying
+                                                      : AnimatedIcons.pause_play,
+                                                  onPressed: audioManager.isPlaying
                                                       ? () {
                                                           audioManager.pause();
                                                         }
                                                       : () async {
-                                                          audioManager
-                                                              .play(index);
+                                                          audioManager.play(index);
                                                         },
                                                 );
                                               }),
@@ -312,8 +293,7 @@ class CustomPlayer extends StatelessWidget {
                                 switch (buttonValue) {
                                   case ButtonState.loading:
                                     return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: const [
                                         IconButton(
                                           onPressed: null,
@@ -334,8 +314,7 @@ class CustomPlayer extends StatelessWidget {
                                     );
                                   case ButtonState.paused:
                                     return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         const IconButton(
                                           onPressed: null,
@@ -346,8 +325,7 @@ class CustomPlayer extends StatelessWidget {
                                         IconButton(
                                           onPressed: () async {
                                             savedPosition = lastPosition;
-                                            await audioManager.changeUrl(
-                                                url, index, savedPosition);
+                                            await audioManager.changeUrl(url, index, savedPosition);
                                             audioManager.seek(
                                               position: savedPosition,
                                             );
@@ -364,8 +342,7 @@ class CustomPlayer extends StatelessWidget {
                                     );
                                   case ButtonState.playing:
                                     return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         const IconButton(
                                           onPressed: null,
@@ -376,8 +353,7 @@ class CustomPlayer extends StatelessWidget {
                                         IconButton(
                                           onPressed: () async {
                                             savedPosition = lastPosition;
-                                            await audioManager.changeUrl(
-                                                url, index, savedPosition);
+                                            await audioManager.changeUrl(url, index, savedPosition);
                                             audioManager.seek(
                                               position: savedPosition,
                                             );

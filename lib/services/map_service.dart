@@ -115,8 +115,7 @@ class MapService with ChangeNotifier {
     }
   }
 
-  Future<void> createPolylines(
-      double destLat, double destLong, BuildContext context) async {
+  Future<void> createPolylines(double destLat, double destLong, BuildContext context) async {
     isFindingRoute = true;
     notifyListeners();
     polylineCoordinates.clear();
@@ -211,9 +210,7 @@ class MapService with ChangeNotifier {
       } else {
         SchedulerBinding.instance.addPostFrameCallback(
           (_) {
-            createPolylines(
-                    markerLocation.latitude, markerLocation.longitude, context)
-                .then(
+            createPolylines(markerLocation.latitude, markerLocation.longitude, context).then(
               (_) async {
                 if (currentLocation.latitude == null ||
                     currentLocation.latitude == 0 ||
@@ -226,24 +223,20 @@ class MapService with ChangeNotifier {
                   CameraUpdate.newLatLngBounds(
                     LatLngBounds(
                       southwest: LatLng(
-                          ((currentLocation.latitude ?? 0) <=
-                                      markerLocation.latitude
+                          ((currentLocation.latitude ?? 0) <= markerLocation.latitude
                                   ? currentLocation.latitude
                                   : markerLocation.latitude) ??
                               0,
-                          ((currentLocation.longitude ?? 0) <=
-                                      markerLocation.longitude
+                          ((currentLocation.longitude ?? 0) <= markerLocation.longitude
                                   ? currentLocation.longitude
                                   : markerLocation.longitude) ??
                               0),
                       northeast: LatLng(
-                          ((currentLocation.latitude ?? 0) <=
-                                      markerLocation.latitude
+                          ((currentLocation.latitude ?? 0) <= markerLocation.latitude
                                   ? markerLocation.latitude
                                   : currentLocation.latitude) ??
                               0,
-                          ((currentLocation.longitude ?? 0) <=
-                                      markerLocation.longitude
+                          ((currentLocation.longitude ?? 0) <= markerLocation.longitude
                                   ? markerLocation.longitude
                                   : currentLocation.longitude) ??
                               0),
@@ -282,8 +275,7 @@ class MapService with ChangeNotifier {
           CameraPosition(
             zoom: 17,
             tilt: 55,
-            target: LatLng(
-                currentLocation.latitude ?? 0, currentLocation.longitude ?? 0),
+            target: LatLng(currentLocation.latitude ?? 0, currentLocation.longitude ?? 0),
           ),
         ),
       );
@@ -320,8 +312,11 @@ class MapService with ChangeNotifier {
     notifyListeners();
   }
 
-  void animateToLocation(
-      {required LatLng latLng, double zoom = 14.0, double tilt = 0.0}) async {
+  void animateToLocation({
+    required LatLng latLng,
+    double zoom = 14.0,
+    double tilt = 0.0,
+  }) async {
     if (isSearchMode) {
       simulateClickFunction(
         clickPosition: Offset(deviceWidth - 25, 50),
@@ -367,12 +362,14 @@ class MapService with ChangeNotifier {
       detailsResult = response.result;
     }
 
-    return LatLng(detailsResult?.geometry?.location?.lat ?? 0,
-        detailsResult?.geometry?.location?.lng ?? 0);
+    return LatLng(
+        detailsResult?.geometry?.location?.lat ?? 0, detailsResult?.geometry?.location?.lng ?? 0);
   }
 
-  void simulateClickFunction(
-      {duration = Duration.zero, required Offset clickPosition}) async {
+  void simulateClickFunction({
+    duration = Duration.zero,
+    required Offset clickPosition,
+  }) async {
     if (duration == Duration.zero) {
       GestureBinding.instance.handlePointerEvent(PointerDownEvent(
         position: clickPosition,

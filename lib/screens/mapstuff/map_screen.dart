@@ -132,19 +132,15 @@ class MapScreen extends StatelessWidget {
                                 buildingsEnabled: false,
                                 compassEnabled: true,
                                 initialCameraPosition: CameraPosition(
-                                    zoom: 14,
-                                    target:
-                                        currentLocation ?? map.centerScreen),
+                                    zoom: 14, target: currentLocation ?? map.centerScreen),
                                 markers: Set<Marker>.of(map.markers.values),
-                                polylines:
-                                    Set<Polyline>.of(map.polylines.values),
+                                polylines: Set<Polyline>.of(map.polylines.values),
                                 onTap: null,
                                 onLongPress: map.mapOnLongPressHandler,
                                 onCameraMove: null,
                                 onCameraIdle: () async {
                                   if (map.isTargetMode && map.flag) {
-                                    map.markerLocation =
-                                        await map.mapController.getLatLng(
+                                    map.markerLocation = await map.mapController.getLatLng(
                                       ScreenCoordinate(
                                         x: middleX,
                                         y: middleY,
@@ -171,8 +167,7 @@ class MapScreen extends StatelessWidget {
                                 ignoring: true,
                                 child: map.isTargetMode
                                     ? Container(
-                                        color:
-                                            Colors.lightBlue.withOpacity(0.1),
+                                        color: Colors.lightBlue.withOpacity(0.1),
                                         child: Center(
                                           child: Theme(
                                             data: ThemeData.light(),
@@ -219,8 +214,7 @@ class MapScreen extends StatelessWidget {
       });
       return null;
     } else {
-      mapService.centerScreen =
-          LatLng(locData.latitude ?? 0, locData.longitude ?? 0);
+      mapService.centerScreen = LatLng(locData.latitude ?? 0, locData.longitude ?? 0);
 
       log('init future finished');
       return LatLng(locData.latitude ?? 0, locData.longitude ?? 0);
@@ -291,9 +285,7 @@ class MapScreen extends StatelessWidget {
                                 },
                           icon: Icon(
                             Icons.directions_bike,
-                            color: map.selectedIndex == 0
-                                ? Colors.amber
-                                : Colors.white,
+                            color: map.selectedIndex == 0 ? Colors.amber : Colors.white,
                           ),
                         ),
                         IconButton(
@@ -309,9 +301,7 @@ class MapScreen extends StatelessWidget {
                                 },
                           icon: Icon(
                             Icons.directions_car,
-                            color: map.selectedIndex == 1
-                                ? Colors.amber
-                                : Colors.white,
+                            color: map.selectedIndex == 1 ? Colors.amber : Colors.white,
                           ),
                         ),
                         IconButton(
@@ -327,9 +317,7 @@ class MapScreen extends StatelessWidget {
                                 },
                           icon: Icon(
                             Icons.directions_transit,
-                            color: map.selectedIndex == 2
-                                ? Colors.amber
-                                : Colors.white,
+                            color: map.selectedIndex == 2 ? Colors.amber : Colors.white,
                           ),
                         ),
                         IconButton(
@@ -345,9 +333,7 @@ class MapScreen extends StatelessWidget {
                                 },
                           icon: Icon(
                             Icons.directions_walk,
-                            color: map.selectedIndex == 3
-                                ? Colors.amber
-                                : Colors.white,
+                            color: map.selectedIndex == 3 ? Colors.amber : Colors.white,
                           ),
                         ),
                       ],
@@ -443,9 +429,7 @@ class MapScreen extends StatelessWidget {
           borderRadius: const BorderRadius.vertical(
             bottom: Radius.circular(25),
           ),
-          color: map.isSearchMode
-              ? Theme.of(context).secondaryHeaderColor
-              : Colors.transparent,
+          color: map.isSearchMode ? Theme.of(context).secondaryHeaderColor : Colors.transparent,
         ),
         height: map.isSearchMode ? 250 : 0,
         width: deviceWidth,
@@ -493,9 +477,7 @@ class MapScreen extends StatelessWidget {
                       return ListTile(
                         leading: Icon(
                           Icons.location_city,
-                          color: map.isSearchMode
-                              ? Colors.white
-                              : Colors.transparent,
+                          color: map.isSearchMode ? Colors.white : Colors.transparent,
                         ),
                         title: Text(
                           map.predictions[i].description ?? 'No Description',
@@ -506,16 +488,13 @@ class MapScreen extends StatelessWidget {
                         trailing: IconButton(
                           icon: Icon(
                             Icons.pin_drop,
-                            color: map.isSearchMode
-                                ? Colors.amber
-                                : Colors.transparent,
+                            color: map.isSearchMode ? Colors.amber : Colors.transparent,
                           ),
                           onPressed: () async {
                             if (map.spamLocation) {
                               map.spamLocation = false;
 
-                              map.markerLocation = await map
-                                  .getLatLng(map.predictions[i].placeId);
+                              map.markerLocation = await map.getLatLng(map.predictions[i].placeId);
                               map.addMarker(map.markerLocation);
                               map.animateToLocation(latLng: map.markerLocation);
                               Future.delayed(

@@ -117,7 +117,10 @@ class HolaconTestScreen extends StatelessWidget {
                               const Spacer(),
                               Switch.adaptive(
                                 value: _switchNotifier.value,
-                                onChanged: (value) {},
+                                onChanged: (value) {
+                                  //TODO: test this switch
+                                  value = !value;
+                                },
                               )
                             ],
                           ),
@@ -209,8 +212,7 @@ class HolaconTestScreen extends StatelessWidget {
                                           children: List.generate(
                                             1,
                                             (ii) => Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 12, right: 10),
+                                              padding: const EdgeInsets.only(left: 12, right: 10),
                                               child: Container(
                                                 height: 30,
                                                 width: 2,
@@ -324,8 +326,7 @@ class HolaconTestScreen extends StatelessWidget {
                                       //**Iconlar arası çizgi generate, 1'i arttırıp paddinge top veya bottom ekleyerek çizgili vertical divider olabilir */
                                       1,
                                       (ii) => Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12, right: 10, top: 9),
+                                        padding: const EdgeInsets.only(left: 12, right: 10, top: 9),
                                         child: Container(
                                           height: 30,
                                           width: 2,
@@ -387,8 +388,7 @@ class HolaconTestScreen extends StatelessWidget {
                                     children: List.generate(
                                       1,
                                       (ii) => Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12, right: 10),
+                                        padding: const EdgeInsets.only(left: 12, right: 10),
                                         child: Container(
                                           height: 30,
                                           width: 2,
@@ -449,8 +449,7 @@ class HolaconTestScreen extends StatelessWidget {
                                     children: List.generate(
                                       1,
                                       (ii) => Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 12, right: 10),
+                                        padding: const EdgeInsets.only(left: 12, right: 10),
                                         child: Container(
                                           height: 30,
                                           width: 2,
@@ -554,8 +553,7 @@ class HolaconTestScreen extends StatelessWidget {
                         focusNode: focusNode,
                         decoration: InputDecoration(
                           hintText: 'Ara...',
-                          hintStyle: TextStyle(
-                              color: value ? Colors.grey : Colors.transparent),
+                          hintStyle: TextStyle(color: value ? Colors.grey : Colors.transparent),
                           border: InputBorder.none,
                         ),
                       ),
@@ -700,8 +698,7 @@ class HolaconTestScreen extends StatelessWidget {
                     child: ListView(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 10.0),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -731,8 +728,7 @@ class HolaconTestScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 10.0),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -776,8 +772,7 @@ class HolaconTestScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 10.0),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -821,8 +816,7 @@ class HolaconTestScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 10.0),
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -892,8 +886,7 @@ class HolaconTestScreen extends StatelessWidget {
                             width: double.infinity,
                             child: OutlinedButton(
                               style: ElevatedButton.styleFrom(
-                                side: const BorderSide(
-                                    width: 1.0, color: Colors.black),
+                                side: const BorderSide(width: 1.0, color: Colors.black),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15.0),
                                 ),
@@ -998,8 +991,7 @@ class HolaconTestScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20, horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10.0),
                   child: Container(
                     padding: const EdgeInsets.only(left: 8.0),
                     decoration: BoxDecoration(
@@ -1014,8 +1006,7 @@ class HolaconTestScreen extends StatelessWidget {
                       maxLength: 13,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
-                        CustomTextFormatter(
-                            sample: '######-######', seperator: '-'),
+                        CustomTextFormatter(sample: '######-######', seperator: '-'),
                         FilteringTextInputFormatter.allow(RegExp('[0-9-]')),
                       ],
                       decoration: const InputDecoration(
@@ -1076,20 +1067,16 @@ class CustomTextFormatter extends TextInputFormatter {
   //** */
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isNotEmpty) {
       if (newValue.text.length > oldValue.text.length) {
         if (newValue.text.length > sample.length) {
           return oldValue;
         }
-        if (newValue.text.length < sample.length &&
-            sample[newValue.text.length - 1] == seperator) {
+        if (newValue.text.length < sample.length && sample[newValue.text.length - 1] == seperator) {
           return TextEditingValue(
-            text:
-                '${oldValue.text}$seperator${newValue.text.substring(newValue.text.length - 1)}',
-            selection:
-                TextSelection.collapsed(offset: newValue.selection.end + 1),
+            text: '${oldValue.text}$seperator${newValue.text.substring(newValue.text.length - 1)}',
+            selection: TextSelection.collapsed(offset: newValue.selection.end + 1),
           );
         }
       }

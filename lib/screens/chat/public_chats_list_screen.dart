@@ -74,8 +74,7 @@ class PublicChatsListScreen extends StatelessWidget {
                               controller: chatNameController,
                               autocorrect: false,
                               textCapitalization: TextCapitalization.sentences,
-                              decoration:
-                                  const InputDecoration(labelText: 'Chat Name'),
+                              decoration: const InputDecoration(labelText: 'Chat Name'),
                               maxLength: 30,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -114,13 +113,9 @@ class PublicChatsListScreen extends StatelessWidget {
   Future<void> tryAddNewChat(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       try {
-        final String generatedId =
-            DateTime.now().microsecondsSinceEpoch.toString();
+        final String generatedId = DateTime.now().microsecondsSinceEpoch.toString();
 
-        await FirebaseFirestore.instance
-            .collection('chats')
-            .doc(generatedId)
-            .set({
+        await FirebaseFirestore.instance.collection('chats').doc(generatedId).set({
           'chatCreatorId': currentUser?.uid,
           'chatName': chatNameController.text,
           'createdAt': DateTime.now(),
@@ -194,8 +189,7 @@ class ChatsList extends StatelessWidget {
 }
 
 class ChatItem extends StatelessWidget {
-  const ChatItem(
-      {super.key, required this.individualChatData, required this.currentUser});
+  const ChatItem({super.key, required this.individualChatData, required this.currentUser});
 
   final QueryDocumentSnapshot<Object?>? individualChatData;
   final User? currentUser;
@@ -214,25 +208,20 @@ class ChatItem extends StatelessWidget {
           );
         }
         //**index dependant logic here */
-        DateTime dt =
-            (individualChatData?['lastUpdated'] as Timestamp).toDate();
+        DateTime dt = (individualChatData?['lastUpdated'] as Timestamp).toDate();
         String formattedDate = dt.day == DateTime.now().day
             ? DateFormat.Hm().format(dt)
             : DateFormat.yMMMMd().format(dt);
 
         final participantsData = participantsSnapshot.data?.docs;
-        int index = participantsData
-                ?.map((e) => e.id)
-                .toList()
-                .indexOf(currentUser?.uid ?? '') ??
-            -1;
+        int index =
+            participantsData?.map((e) => e.id).toList().indexOf(currentUser?.uid ?? '') ?? -1;
         final bool userBelongs = index != -1;
         String lastMessage = individualChatData?['lastMessage'] == ''
             ? '"This Chat is Empty"'
             : individualChatData?['lastMessage'];
         bool chatEmpty = individualChatData?['lastMessage'] == '';
-        bool isLastSenderYou =
-            individualChatData?['lastSender'] == currentUser?.uid;
+        bool isLastSenderYou = individualChatData?['lastSender'] == currentUser?.uid;
 
         //** */
 
@@ -248,8 +237,7 @@ class ChatItem extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             color: Colors.grey[800],
-            highlightColor:
-                userBelongs ? Colors.teal.withOpacity(0.3) : Colors.red,
+            highlightColor: userBelongs ? Colors.teal.withOpacity(0.3) : Colors.red,
             splashColor: userBelongs ? Colors.teal : Colors.red,
             onPressed: () {
               if (userBelongs) {
@@ -295,14 +283,12 @@ class ChatItem extends StatelessWidget {
                                 individualChatData?['chatName'] ?? '',
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 18),
+                                style: const TextStyle(color: Colors.white, fontSize: 18),
                               ),
                             ),
                             Text(
                               formattedDate,
-                              style: const TextStyle(
-                                  color: Colors.grey, fontSize: 12),
+                              style: const TextStyle(color: Colors.grey, fontSize: 12),
                             ),
                           ],
                         ),

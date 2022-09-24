@@ -29,10 +29,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('usersData')
-          .doc(currentUser?.uid)
-          .snapshots(),
+      stream: FirebaseFirestore.instance.collection('usersData').doc(currentUser?.uid).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
         if (userSnapshot.connectionState == ConnectionState.waiting ||
             userSnapshot.connectionState == ConnectionState.none) {
@@ -77,14 +74,12 @@ class ProfileScreen extends StatelessWidget {
                                         value == null
                                             ? CircleAvatar(
                                                 radius: 60,
-                                                backgroundImage: NetworkImage(
-                                                    currentUser?.photoURL ??
-                                                        ''),
+                                                backgroundImage:
+                                                    NetworkImage(currentUser?.photoURL ?? ''),
                                               )
                                             : CircleAvatar(
                                                 radius: 60,
-                                                backgroundImage:
-                                                    FileImage(File(value.path)),
+                                                backgroundImage: FileImage(File(value.path)),
                                               ),
                                         Positioned(
                                           top: 75,
@@ -108,8 +103,7 @@ class ProfileScreen extends StatelessWidget {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const FollowingScreen(),
+                                                builder: (context) => const FollowingScreen(),
                                               ),
                                             );
                                           },
@@ -124,8 +118,7 @@ class ProfileScreen extends StatelessWidget {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    FollowersScreen(
-                                                        thisUser: userData),
+                                                    FollowersScreen(thisUser: userData),
                                               ),
                                             );
                                           },
@@ -151,8 +144,7 @@ class ProfileScreen extends StatelessWidget {
                                     textCapitalization: TextCapitalization.none,
                                     controller: _usernameController,
                                     maxLength: 30,
-                                    decoration: const InputDecoration(
-                                        labelText: 'Username'),
+                                    decoration: const InputDecoration(labelText: 'Username'),
                                     onSaved: (newValue) {
                                       _usernameController.text = newValue ?? '';
                                     },
@@ -170,17 +162,14 @@ class ProfileScreen extends StatelessWidget {
                                   TextFormField(
                                     key: const ValueKey('userDetail'),
                                     autocorrect: true,
-                                    textCapitalization:
-                                        TextCapitalization.sentences,
+                                    textCapitalization: TextCapitalization.sentences,
                                     controller: _userDetailController,
                                     maxLength: 200,
-                                    decoration: const InputDecoration(
-                                        labelText: 'User Detail'),
+                                    decoration: const InputDecoration(labelText: 'User Detail'),
                                     maxLines: 10,
                                     minLines: 1,
                                     onSaved: (newValue) {
-                                      _userDetailController.text =
-                                          newValue ?? '';
+                                      _userDetailController.text = newValue ?? '';
                                     },
                                     onChanged: (_) {
                                       _isUpdatable.value = true;
@@ -201,8 +190,7 @@ class ProfileScreen extends StatelessWidget {
                                     onSaved: (newValue) {
                                       _emailController.text = newValue ?? '';
                                     },
-                                    decoration: const InputDecoration(
-                                        labelText: 'Email'),
+                                    decoration: const InputDecoration(labelText: 'Email'),
                                   ),
                                 ],
                               ),
@@ -234,9 +222,7 @@ class ProfileScreen extends StatelessWidget {
                                       : Text(
                                           'Update',
                                           style: TextStyle(
-                                            color: updateValue
-                                                ? Colors.black
-                                                : Colors.grey,
+                                            color: updateValue ? Colors.black : Colors.grey,
                                           ),
                                         ),
                                 );
@@ -275,10 +261,8 @@ class ProfileScreen extends StatelessWidget {
       if (_pickedImage.value != null) {
         _isLoading.value = true;
 
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('user_image')
-            .child('${currentUser!.uid}.jpg');
+        final ref =
+            FirebaseStorage.instance.ref().child('user_image').child('${currentUser!.uid}.jpg');
         await ref.delete();
         await ref.putFile(File(_pickedImage.value!.path));
         final url = await ref.getDownloadURL();
@@ -286,10 +270,7 @@ class ProfileScreen extends StatelessWidget {
 
         await currentUser?.updateDisplayName(_usernameController.text);
 
-        await FirebaseFirestore.instance
-            .collection('usersData')
-            .doc(currentUser?.uid)
-            .update({
+        await FirebaseFirestore.instance.collection('usersData').doc(currentUser?.uid).update({
           'username': _usernameController.text,
           'userImageUrl': url,
           'userDetail': _userDetailController.text,
@@ -301,10 +282,7 @@ class ProfileScreen extends StatelessWidget {
 
         await currentUser?.updateDisplayName(_usernameController.text);
 
-        await FirebaseFirestore.instance
-            .collection('usersData')
-            .doc(currentUser?.uid)
-            .update({
+        await FirebaseFirestore.instance.collection('usersData').doc(currentUser?.uid).update({
           'username': _usernameController.text,
           'userDetail': _userDetailController.text,
         }).then((value) {

@@ -35,8 +35,7 @@ class PlaceDetailScreen extends StatelessWidget {
             },
           );
           // photoReferances.forEach((element) {});
-          var result =
-              await googlePlace.photos.get(photoReferances.first, 200, 400);
+          var result = await googlePlace.photos.get(photoReferances.first, 200, 400);
           if (result != null) {
             images.add(result);
           }
@@ -119,8 +118,7 @@ class PlaceDetailScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if (detailsResult != null &&
-                              detailsResult?.types != null)
+                          if (detailsResult != null && detailsResult?.types != null)
                             Container(
                               margin: const EdgeInsets.only(left: 15, top: 10),
                               height: 50,
@@ -149,8 +147,7 @@ class PlaceDetailScreen extends StatelessWidget {
                               leading: const CircleAvatar(
                                 child: Icon(Icons.location_on),
                               ),
-                              title: Text(
-                                  'Address: ${detailsResult?.formattedAddress ?? 'Empty'}'),
+                              title: Text('Address: ${detailsResult?.formattedAddress ?? 'Empty'}'),
                             ),
                           ),
                           Container(
@@ -170,8 +167,7 @@ class PlaceDetailScreen extends StatelessWidget {
                               leading: const CircleAvatar(
                                 child: Icon(Icons.timelapse),
                               ),
-                              title: Text(
-                                  'UTC offset: ${detailsResult?.utcOffset.toString()} min'),
+                              title: Text('UTC offset: ${detailsResult?.utcOffset.toString()} min'),
                             ),
                           ),
                         ],

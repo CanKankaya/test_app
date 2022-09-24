@@ -28,9 +28,8 @@ class PublicChatParticipantsScreen extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('usersData').snapshots(),
       builder: (_, AsyncSnapshot<QuerySnapshot> usersSnapshot) {
         return StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('chats/$chatId/participantsData')
-              .snapshots(),
+          stream:
+              FirebaseFirestore.instance.collection('chats/$chatId/participantsData').snapshots(),
           builder: (_, AsyncSnapshot<QuerySnapshot> participantsSnapshot) {
             if (usersSnapshot.hasData && participantsSnapshot.hasData) {
               final participantsData = participantsSnapshot.data?.docs;
@@ -54,8 +53,7 @@ class PublicChatParticipantsScreen extends StatelessWidget {
                     itemCount: participantsData?.length,
                     itemBuilder: (context, index) {
                       final whichUser = usersData?.firstWhere((element) {
-                        return element['userId'] ==
-                            participantsData?[index]['userId'];
+                        return element['userId'] == participantsData?[index]['userId'];
                       });
                       final isUserAdmin = whichUser?['userId'] == creatorId;
                       final isMe = currentUser?.uid == whichUser?['userId'];
@@ -118,9 +116,7 @@ class PublicChatParticipantsScreen extends StatelessWidget {
                               if (isCurrentUserAdmin && !isMe)
                                 PopupMenuButton<int>(
                                   onSelected: (item) => _handleClick(
-                                      item,
-                                      whichUser?['userId'].toString() ?? '',
-                                      context),
+                                      item, whichUser?['userId'].toString() ?? '', context),
                                   itemBuilder: (context) => [
                                     const PopupMenuItem<int>(
                                       value: 0,
@@ -145,8 +141,7 @@ class PublicChatParticipantsScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => AddParticipantScreen(
-                                    chatId: chatId,
-                                    participantsData: participantsData),
+                                    chatId: chatId, participantsData: participantsData),
                               ),
                             );
                           },
@@ -179,8 +174,7 @@ class PublicChatParticipantsScreen extends StatelessWidget {
               content: SingleChildScrollView(
                 child: ListBody(
                   children: const [
-                    Text(
-                        'Are you sure you want to remove this user from the chat?'),
+                    Text('Are you sure you want to remove this user from the chat?'),
                   ],
                 ),
               ),
@@ -285,10 +279,7 @@ class PublicChatParticipantsScreen extends StatelessWidget {
                       return;
                     } else {
                       isLoading.value = true;
-                      await FirebaseFirestore.instance
-                          .collection('chats')
-                          .doc(chatId)
-                          .delete();
+                      await FirebaseFirestore.instance.collection('chats').doc(chatId).delete();
 
                       SchedulerBinding.instance.addPostFrameCallback(
                         (_) {
@@ -296,8 +287,7 @@ class PublicChatParticipantsScreen extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    PublicChatsListScreen(),
+                                builder: (BuildContext context) => PublicChatsListScreen(),
                               ),
                               (route) => false);
                           simplerErrorMessage(

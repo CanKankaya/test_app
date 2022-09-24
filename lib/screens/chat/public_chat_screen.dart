@@ -27,15 +27,11 @@ class PublicChatScreen extends StatelessWidget {
     DocumentSnapshot<Object?>? chatData;
 
     Future getAndSetChatData() async {
-      chatData = await FirebaseFirestore.instance
-          .collection('chats')
-          .doc(chatId)
-          .get();
+      chatData = await FirebaseFirestore.instance.collection('chats').doc(chatId).get();
     }
 
     Future<List<QueryDocumentSnapshot<Object?>>> getUserData() async {
-      QuerySnapshot userSnapshot =
-          await FirebaseFirestore.instance.collection('usersData').get();
+      QuerySnapshot userSnapshot = await FirebaseFirestore.instance.collection('usersData').get();
       return userSnapshot.docs;
     }
 
@@ -61,13 +57,10 @@ class PublicChatScreen extends StatelessWidget {
                 stream: FirebaseFirestore.instance
                     .collection('chats/$chatId/participantsData')
                     .snapshots(),
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot> participantsSnapshot) {
+                builder: (context, AsyncSnapshot<QuerySnapshot> participantsSnapshot) {
                   if (chatSnapshot.connectionState == ConnectionState.waiting ||
-                      participantsSnapshot.connectionState ==
-                          ConnectionState.waiting ||
-                      participantsSnapshot.connectionState ==
-                          ConnectionState.none) {
+                      participantsSnapshot.connectionState == ConnectionState.waiting ||
+                      participantsSnapshot.connectionState == ConnectionState.none) {
                     return const Scaffold(
                       body: Center(
                         child: CircularProgressIndicator(),
@@ -90,12 +83,10 @@ class PublicChatScreen extends StatelessWidget {
                     } else {
                       return GestureDetector(
                         behavior: HitTestBehavior.translucent,
-                        onTap: () =>
-                            FocusManager.instance.primaryFocus?.unfocus(),
+                        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                         child: WillPopScope(
                           onWillPop: () {
-                            Provider.of<ReplyProvider>(context, listen: false)
-                                .closeReply();
+                            Provider.of<ReplyProvider>(context, listen: false).closeReply();
                             return Future.value(true);
                           },
                           child: Scaffold(
@@ -103,13 +94,11 @@ class PublicChatScreen extends StatelessWidget {
                               actions: [
                                 IconButton(
                                   onPressed: () {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
+                                    FocusManager.instance.primaryFocus?.unfocus();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            PublicChatParticipantsScreen(
+                                        builder: (context) => PublicChatParticipantsScreen(
                                           creatorId: chatData?['chatCreatorId'],
                                           chatId: chatId,
                                         ),
@@ -152,11 +141,7 @@ class Messages extends StatelessWidget {
   final List<QueryDocumentSnapshot<Object?>>? usersData;
   final ValueNotifier<int> _itemCount = ValueNotifier<int>(10);
 
-  Messages(
-      {super.key,
-      required this.chatId,
-      this.participantsData,
-      required this.usersData});
+  Messages({super.key, required this.chatId, this.participantsData, required this.usersData});
 
   _refreshFunction() async {
     _itemCount.value += 10;
@@ -224,27 +209,22 @@ class Messages extends StatelessWidget {
                         (index) {
                           //  ** Index dependant logic here */
                           final currentMessage = documents?[index];
-                          bool isMe =
-                              currentMessage?['userId'] == currentUser?.uid;
+                          bool isMe = currentMessage?['userId'] == currentUser?.uid;
                           bool isMeAbove = false;
                           if (index + 1 < (documents?.length ?? 0)) {
-                            isMeAbove = currentMessage?['userId'] ==
-                                documents?[index + 1]['userId'];
+                            isMeAbove =
+                                currentMessage?['userId'] == documents?[index + 1]['userId'];
                           } else {
                             isMeAbove = false;
                           }
                           final whichUser = usersData?.firstWhere(
-                            (element) =>
-                                element.id == currentMessage?['userId'],
+                            (element) => element.id == currentMessage?['userId'],
                           );
                           final foundUser = participantsData?.firstWhereOrNull(
                             (element) => element.id == whichUser?['userId'],
                           );
-                          bool doesUserBelong =
-                              foundUser == null ? false : true;
-                          DateTime dt =
-                              (currentMessage?['createdAt'] as Timestamp)
-                                  .toDate();
+                          bool doesUserBelong = foundUser == null ? false : true;
+                          DateTime dt = (currentMessage?['createdAt'] as Timestamp).toDate();
                           String formattedDate = dt.day == DateTime.now().day
                               ? DateFormat.Hm().format(dt)
                               : DateFormat.yMMMMd().format(dt);
@@ -262,15 +242,12 @@ class Messages extends StatelessWidget {
                             );
                             if (repliedToMessage != null) {
                               repliedToUser = usersData?.firstWhereOrNull(
-                                (element) =>
-                                    element.id == repliedToMessage?['userId'],
+                                (element) => element.id == repliedToMessage?['userId'],
                               );
                             }
                           }
-                          final isReplyToCurrentUser =
-                              currentUser?.uid == repliedToUser?['userId'];
-                          final isReplyToSelf =
-                              currentMessage?['userId'] == currentUser?.uid;
+                          final isReplyToCurrentUser = currentUser?.uid == repliedToUser?['userId'];
+                          final isReplyToSelf = currentMessage?['userId'] == currentUser?.uid;
                           //** */
                           return MessageWidget(
                             chatId: chatId,
@@ -335,10 +312,7 @@ class MessageWidget extends StatelessWidget {
   //** */
 
   Future<void> _deleteMessage(messageId) async {
-    await FirebaseFirestore.instance
-        .collection('chats/$chatId/messages')
-        .doc(messageId)
-        .delete();
+    await FirebaseFirestore.instance.collection('chats/$chatId/messages').doc(messageId).delete();
   }
 
   @override
@@ -385,8 +359,7 @@ class MessageWidget extends StatelessWidget {
         DismissDirection.startToEnd: 0.6,
         DismissDirection.endToStart: 0.6,
       },
-      direction:
-          isMe ? DismissDirection.horizontal : DismissDirection.startToEnd,
+      direction: isMe ? DismissDirection.horizontal : DismissDirection.startToEnd,
       onDismissed: (direction) {},
       confirmDismiss: (DismissDirection dismissDirection) async {
         switch (dismissDirection) {
@@ -512,8 +485,7 @@ class MessageWidget extends StatelessWidget {
                                 ? isReplyToSelf
                                     ? 'Yourself'
                                     : 'You'
-                                : repliedToUser?['username'] ??
-                                    '\'unknown user\'',
+                                : repliedToUser?['username'] ?? '\'unknown user\'',
                             style: const TextStyle(
                               fontSize: 14,
                               color: Colors.amber,
@@ -523,8 +495,7 @@ class MessageWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        repliedToMessage?['text'] ??
-                            '\'this message is deleted \'',
+                        repliedToMessage?['text'] ?? '\'this message is deleted \'',
                         style: TextStyle(
                           fontSize: 12,
                           color: isMe ? Colors.black : Colors.white,
@@ -536,8 +507,7 @@ class MessageWidget extends StatelessWidget {
               ),
             Row(
               key: ValueKey(currentMessage?.id),
-              mainAxisAlignment:
-                  isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+              mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
               children: [
                 Stack(
                   clipBehavior: Clip.none,
@@ -560,12 +530,10 @@ class MessageWidget extends StatelessWidget {
                             borderRadius: BorderRadius.only(
                               topLeft: const Radius.circular(15),
                               topRight: const Radius.circular(15),
-                              bottomLeft: isMe
-                                  ? const Radius.circular(15)
-                                  : const Radius.circular(0),
-                              bottomRight: isMe
-                                  ? const Radius.circular(0)
-                                  : const Radius.circular(15),
+                              bottomLeft:
+                                  isMe ? const Radius.circular(15) : const Radius.circular(0),
+                              bottomRight:
+                                  isMe ? const Radius.circular(0) : const Radius.circular(15),
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
@@ -579,9 +547,8 @@ class MessageWidget extends StatelessWidget {
                             right: 8,
                           ),
                           child: Column(
-                            crossAxisAlignment: isMe
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
+                            crossAxisAlignment:
+                                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                             children: [
                               if (!isMe && !isMeAbove)
                                 Row(
@@ -600,14 +567,12 @@ class MessageWidget extends StatelessWidget {
                                         ('(Removed User)'),
                                         style: TextStyle(
                                           fontSize: 14,
-                                          color: Color.fromARGB(
-                                              255, 195, 195, 195),
+                                          color: Color.fromARGB(255, 195, 195, 195),
                                         ),
                                       ),
                                   ],
                                 ),
-                              if (!isMe && !isMeAbove)
-                                const SizedBox(height: 5),
+                              if (!isMe && !isMeAbove) const SizedBox(height: 5),
                               Text(
                                 currentMessage?['text'] ?? '',
                                 style: TextStyle(
@@ -623,8 +588,7 @@ class MessageWidget extends StatelessWidget {
                                   fontSize: 10,
                                   color: Colors.transparent,
                                 ),
-                                textAlign:
-                                    isMe ? TextAlign.end : TextAlign.start,
+                                textAlign: isMe ? TextAlign.end : TextAlign.start,
                               ),
                             ],
                           ),
@@ -660,8 +624,7 @@ class MessageWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      OtherUserDataScreen(user: whichUser),
+                                  builder: (context) => OtherUserDataScreen(user: whichUser),
                                 ),
                               );
                             }
@@ -773,17 +736,14 @@ class NewMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     void sendMessage() async {
-      final textToSendId =
-          Provider.of<ReplyProvider>(context, listen: false).messageId;
+      final textToSendId = Provider.of<ReplyProvider>(context, listen: false).messageId;
       final textToSend = _enteredMessage.value;
       _enteredMessage.value = '';
       _controller.clear();
       final currentUser = FirebaseAuth.instance.currentUser;
       Provider.of<ReplyProvider>(context, listen: false).closeReply();
 
-      await FirebaseFirestore.instance
-          .collection('chats/$chatId/messages')
-          .add({
+      await FirebaseFirestore.instance.collection('chats/$chatId/messages').add({
         'text': textToSend,
         'createdAt': Timestamp.now(),
         'userId': currentUser?.uid ?? '',
@@ -819,8 +779,7 @@ class NewMessage extends StatelessWidget {
                       enableSuggestions: true,
                       textCapitalization: TextCapitalization.sentences,
                       controller: _controller,
-                      decoration:
-                          const InputDecoration(labelText: 'Send a message...'),
+                      decoration: const InputDecoration(labelText: 'Send a message...'),
                       onChanged: (val) {
                         _enteredMessage.value = val.trim();
                       },

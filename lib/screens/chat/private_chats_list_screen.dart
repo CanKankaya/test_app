@@ -59,8 +59,7 @@ class ChatsList extends StatelessWidget {
         //  chatsData type changed to non-nullable list, if api returns null, list is an empty list instead
         //  previous declaration: final chatsData = chatsSnapshot.data?.docs;
 
-        final List<QueryDocumentSnapshot<Object?>> chatsData =
-            chatsSnapshot.data?.docs ?? [];
+        final List<QueryDocumentSnapshot<Object?>> chatsData = chatsSnapshot.data?.docs ?? [];
         final currentUserChats = chatsData
             .where(
               (element) => element.id.contains('${currentUser?.uid}'),
@@ -84,8 +83,7 @@ class ChatsList extends StatelessWidget {
 }
 
 class ChatItem extends StatelessWidget {
-  const ChatItem(
-      {super.key, required this.individualChatData, required this.currentUser});
+  const ChatItem({super.key, required this.individualChatData, required this.currentUser});
 
   final DocumentSnapshot<Object?>? individualChatData;
   final User? currentUser;
@@ -111,8 +109,7 @@ class ChatItem extends StatelessWidget {
           );
         }
         //**index dependant logic here */
-        DateTime dt =
-            (individualChatData?['lastUpdated'] as Timestamp).toDate();
+        DateTime dt = (individualChatData?['lastUpdated'] as Timestamp).toDate();
         String formattedDate = dt.day == DateTime.now().day
             ? DateFormat.Hm().format(dt)
             : DateFormat.yMMMMd().format(dt);
@@ -120,28 +117,20 @@ class ChatItem extends StatelessWidget {
             ? '"This Chat is Empty"'
             : individualChatData?['lastMessage'];
         bool chatEmpty = individualChatData?['lastMessage'] == '';
-        bool isLastSenderYou =
-            individualChatData?['lastSender'] == currentUser?.uid;
-        final otherUserId = participantsData
-            ?.firstWhereOrNull((element) => element.id != currentUser?.uid)
-            ?.id;
+        bool isLastSenderYou = individualChatData?['lastSender'] == currentUser?.uid;
+        final otherUserId =
+            participantsData?.firstWhereOrNull((element) => element.id != currentUser?.uid)?.id;
 
         return StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('usersData')
-              .doc(otherUserId)
-              .snapshots(),
-          builder:
-              (context, AsyncSnapshot<DocumentSnapshot> otherUserDataSnapshot) {
-            if (otherUserDataSnapshot.connectionState ==
-                    ConnectionState.waiting ||
+          stream: FirebaseFirestore.instance.collection('usersData').doc(otherUserId).snapshots(),
+          builder: (context, AsyncSnapshot<DocumentSnapshot> otherUserDataSnapshot) {
+            if (otherUserDataSnapshot.connectionState == ConnectionState.waiting ||
                 otherUserDataSnapshot.connectionState == ConnectionState.none) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-            final DocumentSnapshot<Object?>? otherUserData =
-                otherUserDataSnapshot.data;
+            final DocumentSnapshot<Object?>? otherUserData = otherUserDataSnapshot.data;
 
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -153,8 +142,7 @@ class ChatItem extends StatelessWidget {
                     width: 2.0,
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 color: Colors.grey[800],
                 splashColor: Colors.amber,
                 onPressed: () {
@@ -162,8 +150,7 @@ class ChatItem extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (BuildContext context) => PrivateChatScreen(
-                          chatId: individualChatData?.id ?? '',
-                          otherUser: otherUserData),
+                          chatId: individualChatData?.id ?? '', otherUser: otherUserData),
                     ),
                   );
                 },
@@ -201,14 +188,12 @@ class ChatItem extends StatelessWidget {
                                     otherUserData?['username'] ?? '',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 18),
+                                    style: const TextStyle(color: Colors.white, fontSize: 18),
                                   ),
                                 ),
                                 Text(
                                   formattedDate,
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 12),
+                                  style: const TextStyle(color: Colors.grey, fontSize: 12),
                                 ),
                               ],
                             ),

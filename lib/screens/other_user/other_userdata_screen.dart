@@ -59,8 +59,7 @@ class OtherUserDataScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      OtherUserFollowingScreen(thisUser: user),
+                                  builder: (context) => OtherUserFollowingScreen(thisUser: user),
                                 ),
                               );
                             },
@@ -74,8 +73,7 @@ class OtherUserDataScreen extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      OtherUserFollowersScreen(thisUser: user),
+                                  builder: (context) => OtherUserFollowersScreen(thisUser: user),
                                 ),
                               );
                             },
@@ -95,16 +93,13 @@ class OtherUserDataScreen extends StatelessWidget {
                           .collection('usersData')
                           .doc(currentUser?.uid)
                           .snapshots(),
-                      builder: (context,
-                          AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                      builder: (context, AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                         if (userSnapshot.hasData) {
                           final currentUserData = userSnapshot.data;
-                          final List<dynamic> followingList =
-                              currentUserData?['following'];
-                          final foundUser = followingList.firstWhereOrNull(
-                              (element) => element == user?['userId']);
-                          final bool amIFollowing =
-                              foundUser == null ? false : true;
+                          final List<dynamic> followingList = currentUserData?['following'];
+                          final foundUser = followingList
+                              .firstWhereOrNull((element) => element == user?['userId']);
+                          final bool amIFollowing = foundUser == null ? false : true;
 
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,8 +119,7 @@ class OtherUserDataScreen extends StatelessWidget {
                                                       .unfollow(user?['userId'])
                                                       .then((_) {
                                                       fIsLoading.value = false;
-                                                      ScaffoldMessenger.of(
-                                                              context)
+                                                      ScaffoldMessenger.of(context)
                                                           .clearSnackBars();
                                                       simplerErrorMessage(
                                                         context,
@@ -139,10 +133,8 @@ class OtherUserDataScreen extends StatelessWidget {
                                                       .follow(user?['userId'])
                                                       .then(
                                                       (_) {
-                                                        fIsLoading.value =
-                                                            false;
-                                                        ScaffoldMessenger.of(
-                                                                context)
+                                                        fIsLoading.value = false;
+                                                        ScaffoldMessenger.of(context)
                                                             .clearSnackBars();
                                                         simplerErrorMessage(
                                                           context,
@@ -156,9 +148,7 @@ class OtherUserDataScreen extends StatelessWidget {
                                             },
                                       child: loading
                                           ? const CircularProgressIndicator()
-                                          : Text(amIFollowing
-                                              ? 'UnFollow'
-                                              : 'Follow'),
+                                          : Text(amIFollowing ? 'UnFollow' : 'Follow'),
                                     ),
                                   );
                                 },
@@ -174,21 +164,17 @@ class OtherUserDataScreen extends StatelessWidget {
                                           : () async {
                                               mIsLoading.value = true;
                                               messageService
-                                                  .createPrivateChat(
-                                                      user?['userId'])
+                                                  .createPrivateChat(user?['userId'])
                                                   .then(
                                                 (privChatId) {
                                                   mIsLoading.value = false;
                                                   Navigator.pushAndRemoveUntil(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (BuildContext
-                                                                context) =>
+                                                        builder: (BuildContext context) =>
                                                             PrivateChatScreen(
-                                                                chatId:
-                                                                    privChatId,
-                                                                otherUser:
-                                                                    user),
+                                                                chatId: privChatId,
+                                                                otherUser: user),
                                                       ),
                                                       (route) => false);
                                                 },

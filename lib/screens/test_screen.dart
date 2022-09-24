@@ -357,8 +357,7 @@ class TestChart extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Icon(Icons.bar_chart_rounded, size: 40),
                         ),
-                        const Text('Temp Data Text Here',
-                            style: TextStyle(fontSize: 16)),
+                        const Text('Temp Data Text Here', style: TextStyle(fontSize: 16)),
                         const Spacer(),
                         Padding(
                           padding: const EdgeInsets.all(8.0),

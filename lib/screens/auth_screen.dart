@@ -57,16 +57,14 @@ class AuthScreen extends StatelessWidget {
           if (_isLogin.value) {
             await _auth
                 .signInWithEmailAndPassword(
-                    email: userEmail.toString().trim(),
-                    password: userPassword.toString().trim())
+                    email: userEmail.toString().trim(), password: userPassword.toString().trim())
                 .catchError((error) {
               throw error;
             });
           } else {
             var authResult = await _auth
                 .createUserWithEmailAndPassword(
-                    email: userEmail.toString().trim(),
-                    password: userPassword.toString().trim())
+                    email: userEmail.toString().trim(), password: userPassword.toString().trim())
                 .catchError((error) {
               throw error;
             });
@@ -77,10 +75,7 @@ class AuthScreen extends StatelessWidget {
                 .child('${authResult.user!.uid}.jpg');
             await ref.putFile(File(_pickedImage.value!.path));
             final url = await ref.getDownloadURL();
-            FirebaseFirestore.instance
-                .collection('usersData')
-                .doc(authResult.user?.uid)
-                .set({
+            FirebaseFirestore.instance.collection('usersData').doc(authResult.user?.uid).set({
               'userId': authResult.user?.uid,
               'username': username,
               'userImageUrl': url,
@@ -152,35 +147,26 @@ class AuthScreen extends StatelessWidget {
                                             children: [
                                               if (!isLoginValue)
                                                 ValueListenableBuilder(
-                                                    valueListenable:
-                                                        _pickedImage,
-                                                    builder:
-                                                        (_, XFile? value, __) {
+                                                    valueListenable: _pickedImage,
+                                                    builder: (_, XFile? value, __) {
                                                       return CircleAvatar(
-                                                        backgroundColor:
-                                                            Colors.grey,
+                                                        backgroundColor: Colors.grey,
                                                         radius: 40,
-                                                        backgroundImage:
-                                                            value != null
-                                                                ? FileImage(
-                                                                    File(value
-                                                                        .path))
-                                                                : null,
+                                                        backgroundImage: value != null
+                                                            ? FileImage(File(value.path))
+                                                            : null,
                                                       );
                                                     }),
                                               if (!isLoginValue)
                                                 TextButton.icon(
                                                   onPressed: _selectImage,
-                                                  icon:
-                                                      const Icon(Icons.camera),
-                                                  label:
-                                                      const Text('Add Image'),
+                                                  icon: const Icon(Icons.camera),
+                                                  label: const Text('Add Image'),
                                                 ),
                                               TextFormField(
                                                 key: const ValueKey('email'),
                                                 autocorrect: false,
-                                                textCapitalization:
-                                                    TextCapitalization.none,
+                                                textCapitalization: TextCapitalization.none,
                                                 maxLength: 50,
                                                 onSaved: (newValue) {
                                                   userEmail = newValue;
@@ -194,55 +180,39 @@ class AuthScreen extends StatelessWidget {
                                                     return null;
                                                   }
                                                 },
-                                                keyboardType:
-                                                    TextInputType.emailAddress,
-                                                decoration:
-                                                    const InputDecoration(
-                                                        labelText:
-                                                            'Email address'),
+                                                keyboardType: TextInputType.emailAddress,
+                                                decoration: const InputDecoration(
+                                                    labelText: 'Email address'),
                                               ),
                                               if (!isLoginValue)
                                                 TextFormField(
-                                                  key: const ValueKey(
-                                                      'username'),
+                                                  key: const ValueKey('username'),
                                                   autocorrect: false,
-                                                  textCapitalization:
-                                                      TextCapitalization.none,
+                                                  textCapitalization: TextCapitalization.none,
                                                   onSaved: (newValue) {
                                                     username = newValue;
                                                   },
                                                   maxLength: 30,
                                                   validator: (value) {
-                                                    if (value == null ||
-                                                        value.isEmpty) {
+                                                    if (value == null || value.isEmpty) {
                                                       return 'Username cant be empty';
                                                     } else {
                                                       return null;
                                                     }
                                                   },
                                                   decoration:
-                                                      const InputDecoration(
-                                                          labelText:
-                                                              'Username'),
+                                                      const InputDecoration(labelText: 'Username'),
                                                 ),
                                               ValueListenableBuilder(
-                                                  valueListenable:
-                                                      _hidePassword,
-                                                  builder: (_,
-                                                      bool hidePasswordValue,
-                                                      __) {
+                                                  valueListenable: _hidePassword,
+                                                  builder: (_, bool hidePasswordValue, __) {
                                                     return TextFormField(
-                                                      key: const ValueKey(
-                                                          'password'),
-                                                      controller:
-                                                          _userPasswordController,
+                                                      key: const ValueKey('password'),
+                                                      controller: _userPasswordController,
                                                       autocorrect: false,
-                                                      textCapitalization:
-                                                          TextCapitalization
-                                                              .none,
+                                                      textCapitalization: TextCapitalization.none,
                                                       maxLength: 30,
-                                                      obscureText:
-                                                          hidePasswordValue,
+                                                      obscureText: hidePasswordValue,
                                                       onSaved: (newValue) {
                                                         userPassword = newValue;
                                                       },
@@ -255,86 +225,63 @@ class AuthScreen extends StatelessWidget {
                                                           return null;
                                                         }
                                                       },
-                                                      decoration:
-                                                          InputDecoration(
+                                                      decoration: InputDecoration(
                                                         labelText: 'Password',
                                                         suffixIcon: IconButton(
                                                           onPressed: () {
-                                                            _hidePassword
-                                                                    .value =
-                                                                !_hidePassword
-                                                                    .value;
+                                                            _hidePassword.value =
+                                                                !_hidePassword.value;
                                                           },
-                                                          icon:
-                                                              hidePasswordValue
-                                                                  ? const Icon(
-                                                                      Icons
-                                                                          .visibility_off,
-                                                                      color: Colors
-                                                                          .grey,
-                                                                    )
-                                                                  : const Icon(
-                                                                      Icons
-                                                                          .visibility,
-                                                                      color: Colors
-                                                                          .blue,
-                                                                    ),
+                                                          icon: hidePasswordValue
+                                                              ? const Icon(
+                                                                  Icons.visibility_off,
+                                                                  color: Colors.grey,
+                                                                )
+                                                              : const Icon(
+                                                                  Icons.visibility,
+                                                                  color: Colors.blue,
+                                                                ),
                                                         ),
                                                       ),
                                                     );
                                                   }),
                                               if (!isLoginValue)
                                                 ValueListenableBuilder(
-                                                  valueListenable:
-                                                      _hideConfirmPassword,
-                                                  builder: (context,
-                                                      bool confirmPassValue,
-                                                      __) {
+                                                  valueListenable: _hideConfirmPassword,
+                                                  builder: (context, bool confirmPassValue, __) {
                                                     return TextFormField(
-                                                      key: const ValueKey(
-                                                          'confirmPassword'),
+                                                      key: const ValueKey('confirmPassword'),
                                                       enabled: !isLoginValue,
                                                       onSaved: (newValue) {
                                                         userPassword = newValue;
                                                       },
                                                       maxLength: 30,
-                                                      obscureText:
-                                                          confirmPassValue,
+                                                      obscureText: confirmPassValue,
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty ||
                                                             value.length < 8 ||
-                                                            value !=
-                                                                _userPasswordController
-                                                                    .text) {
+                                                            value != _userPasswordController.text) {
                                                           return 'Passwords do not match';
                                                         } else {
                                                           return null;
                                                         }
                                                       },
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelText:
-                                                            'Confirm Password',
+                                                      decoration: InputDecoration(
+                                                        labelText: 'Confirm Password',
                                                         suffixIcon: IconButton(
                                                           onPressed: () {
-                                                            _hideConfirmPassword
-                                                                    .value =
-                                                                !_hideConfirmPassword
-                                                                    .value;
+                                                            _hideConfirmPassword.value =
+                                                                !_hideConfirmPassword.value;
                                                           },
                                                           icon: confirmPassValue
                                                               ? const Icon(
-                                                                  Icons
-                                                                      .visibility_off,
-                                                                  color: Colors
-                                                                      .grey,
+                                                                  Icons.visibility_off,
+                                                                  color: Colors.grey,
                                                                 )
                                                               : const Icon(
-                                                                  Icons
-                                                                      .visibility,
-                                                                  color: Colors
-                                                                      .blue,
+                                                                  Icons.visibility,
+                                                                  color: Colors.blue,
                                                                 ),
                                                         ),
                                                       ),
@@ -350,21 +297,17 @@ class AuthScreen extends StatelessWidget {
                                                       },
                                                       child: isLoginValue
                                                           ? const Text('Login')
-                                                          : const Text(
-                                                              'Sign Up'),
+                                                          : const Text('Sign Up'),
                                                     ),
                                               loadingValue
                                                   ? const CircularProgressIndicator()
                                                   : TextButton(
                                                       onPressed: () {
-                                                        _isLogin.value =
-                                                            !_isLogin.value;
+                                                        _isLogin.value = !_isLogin.value;
                                                       },
                                                       child: isLoginValue
-                                                          ? const Text(
-                                                              'Create New Account')
-                                                          : const Text(
-                                                              'I already have an account'),
+                                                          ? const Text('Create New Account')
+                                                          : const Text('I already have an account'),
                                                     ),
                                             ],
                                           );

@@ -50,8 +50,7 @@ class PrivateChatParticipantsScreen extends StatelessWidget {
                     itemCount: participantsData?.length,
                     itemBuilder: (context, index) {
                       final whichUser = usersData?.firstWhere((element) {
-                        return element['userId'] ==
-                            participantsData?[index]['userId'];
+                        return element['userId'] == participantsData?[index]['userId'];
                       });
                       final isMe = currentUser?.uid == whichUser?['userId'];
 
@@ -170,8 +169,7 @@ class PrivateChatParticipantsScreen extends StatelessWidget {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const PrivateChatsListScreen(),
+                                builder: (BuildContext context) => const PrivateChatsListScreen(),
                               ),
                               (route) => false);
                           simplerErrorMessage(

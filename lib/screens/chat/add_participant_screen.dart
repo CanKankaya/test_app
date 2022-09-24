@@ -10,8 +10,7 @@ import 'package:test_app/providers/add_participant_provider.dart';
 import 'package:test_app/widgets/simpler_error_message.dart';
 
 class AddParticipantScreen extends StatelessWidget {
-  const AddParticipantScreen(
-      {Key? key, this.participantsData, required this.chatId})
+  const AddParticipantScreen({Key? key, this.participantsData, required this.chatId})
       : super(key: key);
   final String chatId;
   final List<QueryDocumentSnapshot<Object?>>? participantsData;
@@ -26,8 +25,7 @@ class AddParticipantScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(),
         body: StreamBuilder(
-          stream:
-              FirebaseFirestore.instance.collection('usersData').snapshots(),
+          stream: FirebaseFirestore.instance.collection('usersData').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> usersSnapshot) {
             if (usersSnapshot.connectionState == ConnectionState.waiting ||
                 usersSnapshot.connectionState == ConnectionState.none) {
@@ -44,8 +42,7 @@ class AddParticipantScreen extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: usersData?.length ?? 0,
                       itemBuilder: (context, index) {
-                        final user =
-                            participantsData?.firstWhereOrNull((element) {
+                        final user = participantsData?.firstWhereOrNull((element) {
                           return element.id == usersData?[index]['userId'];
                         });
                         if (user == null) {
@@ -74,8 +71,7 @@ class AddParticipantScreen extends StatelessWidget {
                                     (_) {
                                       providerValue.clearList();
                                       Navigator.of(context).pop();
-                                      SchedulerBinding.instance
-                                          .addPostFrameCallback(
+                                      SchedulerBinding.instance.addPostFrameCallback(
                                         (_) {
                                           simplerErrorMessage(
                                             context,
@@ -152,8 +148,7 @@ class UserItem extends StatelessWidget {
             isChecked.value = !isChecked.value;
 
             if (!value) {
-              Provider.of<AddListProvider>(context, listen: false)
-                  .addToList(user?['userId'] ?? '');
+              Provider.of<AddListProvider>(context, listen: false).addToList(user?['userId'] ?? '');
             } else {
               Provider.of<AddListProvider>(context, listen: false)
                   .removeFromList(user?['userId'] ?? '');

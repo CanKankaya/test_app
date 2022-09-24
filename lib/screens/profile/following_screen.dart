@@ -27,8 +27,7 @@ class FollowingScreen extends StatelessWidget {
         }
         final currentUser = FirebaseAuth.instance.currentUser;
         final usersData = usersSnapshot.data?.docs;
-        final currentUserData =
-            usersData?.firstWhere((element) => element.id == currentUser?.uid);
+        final currentUserData = usersData?.firstWhere((element) => element.id == currentUser?.uid);
         final List<dynamic> followingList = currentUserData?['following'];
         List<QueryDocumentSnapshot<Object?>>? notFoundUsersData = [];
 
@@ -164,9 +163,7 @@ class FollowingUserItem extends StatelessWidget {
             valueListenable: isLoading,
             builder: (_, bool value, __) {
               return IconButton(
-                icon: value
-                    ? const CircularProgressIndicator()
-                    : const Icon(Icons.remove),
+                icon: value ? const CircularProgressIndicator() : const Icon(Icons.remove),
                 onPressed: !value
                     ? () {
                         isLoading.value = true;
@@ -232,15 +229,11 @@ class OtherUserItem extends StatelessWidget {
             valueListenable: isLoading,
             builder: (_, bool value, __) {
               return IconButton(
-                icon: value
-                    ? const CircularProgressIndicator()
-                    : const Icon(Icons.add),
+                icon: value ? const CircularProgressIndicator() : const Icon(Icons.add),
                 onPressed: !value
                     ? () {
                         isLoading.value = true;
-                        followService
-                            .follow(user?['userId'])
-                            .then((_) => isLoading.value = false);
+                        followService.follow(user?['userId']).then((_) => isLoading.value = false);
                       }
                     : null,
               );
