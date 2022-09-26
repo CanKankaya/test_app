@@ -16,8 +16,8 @@ import 'package:test_app/widgets/expandable_fab.dart';
 
 import 'package:test_app/screens/holacon_test_screen.dart';
 
-import 'package:test_app/route_test_screens/route_test_1.dart';
-import 'package:test_app/route_test_screens/route_test_3.dart';
+import 'package:test_app/screens/route_test_screens/route_test_1.dart';
+import 'package:test_app/screens/route_test_screens/route_test_3.dart';
 
 class TestScreen extends StatelessWidget {
   TestScreen({Key? key}) : super(key: key);
