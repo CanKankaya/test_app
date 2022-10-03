@@ -362,10 +362,7 @@ class MapService with ChangeNotifier {
         detailsResult?.geometry?.location?.lat ?? 0, detailsResult?.geometry?.location?.lng ?? 0);
   }
 
-  void simulateClickFunction({
-    duration = Duration.zero,
-    required Offset clickPosition,
-  }) async {
+  void simulateClickFunction({duration = Duration.zero, required Offset clickPosition}) async {
     if (duration == Duration.zero) {
       GestureBinding.instance.handlePointerEvent(PointerDownEvent(
         position: clickPosition,
