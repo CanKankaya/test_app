@@ -312,11 +312,7 @@ class MapService with ChangeNotifier {
     notifyListeners();
   }
 
-  void animateToLocation({
-    required LatLng latLng,
-    double zoom = 14.0,
-    double tilt = 0.0,
-  }) async {
+  void animateToLocation({required LatLng latLng, double zoom = 14.0, double tilt = 0.0}) async {
     if (isSearchMode) {
       simulateClickFunction(
         clickPosition: Offset(deviceWidth - 25, 50),
