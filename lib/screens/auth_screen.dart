@@ -75,7 +75,7 @@ class AuthScreen extends StatelessWidget {
                 .child('${authResult.user!.uid}.jpg');
             await ref.putFile(File(_pickedImage.value!.path));
             final url = await ref.getDownloadURL();
-            FirebaseFirestore.instance.collection('usersData').doc(authResult.user?.uid).set({
+            await FirebaseFirestore.instance.collection('usersData').doc(authResult.user?.uid).set({
               'userId': authResult.user?.uid,
               'username': username,
               'userImageUrl': url,
