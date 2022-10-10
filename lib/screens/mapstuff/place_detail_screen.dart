@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:google_place/google_place.dart';
 
-import 'package:test_app/constants.dart';
+import 'package:test_app/ignore.dart';
 
 import 'package:test_app/widgets/simpler_custom_loading.dart';
 

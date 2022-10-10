@@ -1,5 +1,3 @@
-const String googleMapsApiKey = 'AIzaSyC02_5ro7oCOqz0osiyG6I8hTQK40hF6Vo';
-
 double deviceHeight = 0.0;
 double deviceWidth = 0.0;
 
