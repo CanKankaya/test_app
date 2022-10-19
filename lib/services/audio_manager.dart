@@ -35,7 +35,11 @@ class AudioManager {
   );
   final buttonNotifier = ValueNotifier<ButtonState>(ButtonState.paused);
   final lastActiveIndex = ValueNotifier<int>(0);
+
+  //** initIcon benim custom play buttonumun state'ini yönetiyor sadece
+  //   Fonksiyonel bi etkisi yok */
   final initIcon = ValueNotifier<bool>(true);
+  //** */
 
   late AudioPlayer _audioPlayer;
   bool isInitializing = false;
