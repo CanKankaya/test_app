@@ -49,3 +49,4 @@ app.*.map.json
 # MyIgnores
 
 /lib/ignore.dart
+lib/assignment_test_zone.dart
